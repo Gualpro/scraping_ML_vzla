@@ -4,12 +4,26 @@ from lxml import etree
 import math
 
 def listado_Productos(data_Body):
+    #Declaracion de las lista donde de guardara la informacion obtenida
     lista_Titulos = []
     lista_Urls = []
     lista_Precios = []
-    url_Request = "https://tienda.mercadolibre.com.ve/"+data_Body["vendedor"]
-    print(url_Request)
 
+    #Validacion y transformacion de la informacion enviada desde el formulario
+    palabra_Clave = data_Body["palabra_Clave"].lower().replace(" ","-")
+    limitador_Producto = int(data_Body["limitador_Producto"])
+    cantidad_Productos_Mostrados = int(data_Body["cantidad_Productos_Mostrados"])
+    condicion_Envio = int(data_Body["condicion_Envio"])
+
+    #Construccion de la URL para hacer el request 
+    if condicion_Envio == 1:
+        #Solo producto con envio Gratis
+        url_Request = ("https://listado.mercadolibre.com.ve/" + palabra_Clave + "_CostoEnvio_Gratis_NoIndex_True")
+    else:
+        #Todo los producto
+        url_Request = ("https://listado.mercadolibre.com.ve/" + palabra_Clave)
+
+    print(f"URL Visitada: {url_Request}")
     while True:
         #realiza el primer request de la url semilla
         re = requests.get(url_Request)
@@ -57,12 +71,34 @@ def listado_Productos(data_Body):
         else:
             break
         
-        print(pagina_Actual,total_Paginacion )
+        #Limitador de cantidad de Producto a buscar y mostrar
+        if limitador_Producto == 0:
+            #Busqueda sin limitador de cantidad de productos 
+            print(f"Pagina {pagina_Actual} de {total_Paginacion}")
+            if pagina_Actual == total_Paginacion:
+                break
+        else:
+            #Limitado activado muestra solo la cantidad de productos elegida por el usuario
 
-        if pagina_Actual == total_Paginacion:
-            break
-        
+            #Se valida la cantidad de pagina a visitar
+            numero_paginas = math.ceil(cantidad_Productos_Mostrados/50)
+            #Se valida si la cantidad de paginas a visita esta donde del rango obtenido
+            if numero_paginas >= total_Paginacion:
+                print(f"Pagina {pagina_Actual} de {total_Paginacion}")
+                if pagina_Actual == total_Paginacion:
+                    #Se Valida  la cantidad de producto a retornar
+                    if len(lista_Titulos) >= cantidad_Productos_Mostrados:
+                        return lista_Titulos[0:cantidad_Productos_Mostrados], lista_Urls[0:cantidad_Productos_Mostrados], lista_Precios[0:cantidad_Productos_Mostrados]
+                    else:
+                        return lista_Titulos, lista_Urls, lista_Precios
+            
+            else:
+                #Retorna los productos dentro del rango del productos encontrado menos 1
+                print(f"Pagina {pagina_Actual} de {numero_paginas}")
+                if pagina_Actual == numero_paginas:
+                        return lista_Titulos[0:cantidad_Productos_Mostrados], lista_Urls[0:cantidad_Productos_Mostrados], lista_Precios[0:cantidad_Productos_Mostrados]
+
         #Encontrar la Url para paginar
         url_Request = dom.xpath("//div[@class='ui-search-pagination']/nav/ul/li[contains(@class,'--next')]/a")[0].get('href')
-
+    
     return lista_Titulos, lista_Urls, lista_Precios
