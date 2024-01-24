@@ -1,8 +1,14 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from Scrapiny_listado import listado_Productos
 import json
 
 app = Flask(__name__)
+
+
+@app.route("/", methods=['GET'])
+def index():
+    return render_template('index.html')
+
 
 @app.route("/mercadolibre", methods=['GET'])
     
