@@ -61,7 +61,8 @@ def listado_Productos(data_Body):
             lista_Precios.extend(precios)
 
             #Pagina actual
-            pagina_Actual = soup.find("button", attrs={"class":"andes-pagination__link"}).text
+            
+            pagina_Actual = dom.xpath("//li[@class='andes-pagination__button andes-pagination__button--current']/button")[0].text
             pagina_Actual = int(pagina_Actual)
 
             #Total de la paginacion
@@ -103,6 +104,6 @@ def listado_Productos(data_Body):
                         return lista_Titulos[0:cantidad_Productos_Mostrados], lista_Urls[0:cantidad_Productos_Mostrados], lista_Precios[0:cantidad_Productos_Mostrados]
 
         #Encontrar la Url para paginar
-        url_Request = dom.xpath("//div[@class='ui-search-pagination']/nav/ul/li[contains(@class,'--next')]/a")[0].get('href')
+        url_Request = dom.xpath("//li[@class='andes-pagination__button andes-pagination__button--next']/a")[0].get('href')
     
     return lista_Titulos, lista_Urls, lista_Precios
