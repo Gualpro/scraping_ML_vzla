@@ -68,10 +68,10 @@ def listado_Productos(data_Body):
             #Total de la paginacion
             total_Paginacion = soup.find("span", attrs={"class":"ui-search-search-result__quantity-results"})
             total_Paginacion = int(total_Paginacion.text.split(' ')[0].replace(".",""))
-            if total_Paginacion <= 2000:
+            if total_Paginacion <= 450:
                 total_Paginacion = math.ceil(total_Paginacion/50)
             else:
-                total_Paginacion = 40
+                total_Paginacion = 9
 
         else:
             break
