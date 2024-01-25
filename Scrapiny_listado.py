@@ -61,13 +61,17 @@ def listado_Productos(data_Body):
             lista_Precios.extend(precios)
 
             #Pagina actual
-            pagina_Actual = soup.find("span", attrs={"class":"andes-pagination__link"}).text
+            pagina_Actual = soup.find("button", attrs={"class":"andes-pagination__link"}).text
             pagina_Actual = int(pagina_Actual)
 
             #Total de la paginacion
-            total_Paginacion = soup.find("li", attrs={"class":"andes-pagination__page-count"})
-            total_Paginacion = int(total_Paginacion.text.split(' ')[1])
-    
+            total_Paginacion = soup.find("span", attrs={"class":"ui-search-search-result__quantity-results"})
+            total_Paginacion = int(total_Paginacion.text.split(' ')[0].replace(".",""))
+            if total_Paginacion <= 2000:
+                total_Paginacion = math.ceil(total_Paginacion/50)
+            else:
+                total_Paginacion = 40
+
         else:
             break
         

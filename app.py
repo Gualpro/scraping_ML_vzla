@@ -15,6 +15,7 @@ def index():
     
 def mercadoLibre():
     #Recibe la data del Body
+
     data_Body = json.loads(request.data)
     print(data_Body)
     #Llama a la funcion para obtener el listado de productos
@@ -22,4 +23,4 @@ def mercadoLibre():
     return jsonify({'data':{'Titulo':titulos, 'Url':urls, 'Precio':precios}} )
 
 if (__name__)=='__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
