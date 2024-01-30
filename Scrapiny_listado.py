@@ -3,17 +3,17 @@ from bs4 import BeautifulSoup
 from lxml import etree
 import math
 
-def listado_Productos(data_Body):
+def listado_Productos(html_Producto, html_Envio, html_Limitador, html_Limite):
     #Declaracion de las lista donde de guardara la informacion obtenida
     lista_Titulos = []
     lista_Urls = []
     lista_Precios = []
 
     #Validacion y transformacion de la informacion enviada desde el formulario
-    palabra_Clave = data_Body["palabra_Clave"].lower().replace(" ","-")
-    limitador_Producto = int(data_Body["limitador_Producto"])
-    cantidad_Productos_Mostrados = int(data_Body["cantidad_Productos_Mostrados"])
-    condicion_Envio = int(data_Body["condicion_Envio"])
+    palabra_Clave = html_Producto.lower().replace(" ","-")
+    condicion_Envio = int(html_Envio)
+    limitador_Producto = int(html_Limitador)
+    cantidad_Productos_Mostrados = int(html_Limite)
 
     #Construccion de la URL para hacer el request 
     if condicion_Envio == 1:

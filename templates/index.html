@@ -7,5 +7,30 @@
 </head>
 <body>
     <h1>Scraping Mercadolibre Venezuela</h1>
+    <form action="/mercadolibre" method="post">
+        <div>
+            <label for="Producto">Producto</label>
+            <input type="text" name="Producto" id="Producto" placeholder="Producto" required>
+        </div>
+        <div>
+            <label for="Envio">Condicion de Envio</label>
+            <select name="Envio" id="Envio">
+                <option value="1">Gratis</option>
+                <option value="0">Todos</option>
+            </select>
+        </div>
+        <div>
+            <label for="Limitador">Limitar Cantidad de Productos</label>
+            <label for="Limitador">Si</label>
+            <input type="radio" name="Limitador" id="Limitador" value="1">
+            <label for="Limitador">No</label>
+            <input type="radio" name="Limitador" id="Limitador" value="0">
+        </div>
+        <div>
+            <label for="Limite">Limite</label>
+            <input type="number" name="Limite" id="Limite" placeholder="Limite">
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
 </body>
 </html>
